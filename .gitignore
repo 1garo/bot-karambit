@@ -1,0 +1,4 @@
+*.js*
+services/*.js*
+.env
+inversify.config.js
