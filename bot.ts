@@ -1,8 +1,9 @@
-import {Client, Message} from 'discord.js';
+import {Client, Message, VoiceConnection} from 'discord.js';
 import {inject, injectable} from "inversify";
 import {TYPES} from "./types";
 import {MessageResponder} from "./services/message-responder"; 
 import {MusicResponder} from './services/music-responder';
+import {PREFIX as prefix} from './config.json';
 
 @injectable()
 export class Bot {
@@ -23,30 +24,35 @@ export class Bot {
     this.musicResponder = musicResponder;
   }
 
-  public listen(): Promise<string> {
+  public async listen(queue: Map<any, any>): Promise<string> {
     this.client.on('message', async (message: Message) => {
-      let connection;
       if (message.author.bot){
         console.log('Ignoring bot message!')
         return;
       }
-      if (message.member.voice.channel) {
-        connection = await message.member.voice.channel.join();
-      }
       console.log("Message received! Contents: ", message.content);
-
       this.messageResponder.handle(message).then(() => {
         console.log('Ping test message sent!')
       }).catch(() => {
         console.log('Ping teste response not sent.')
       })
-     
-      this.musicResponder.play(message, connection).then(() => {
-        message.reply('playing music requested!');
-      }).catch(err => {
-        console.log(err);
-      })
+
+      const serverQueue = queue.get(message.guild.id);
+
+      if (message.content.startsWith(`${prefix}play`)) {
+        this.musicResponder.play(message, serverQueue, queue).then(() => {
+          message.reply('playing music requested!');
+        }).catch(err => {
+          err.then(_err => console.log(_err.content));
+        })
+      } else if (message.content.startsWith(`${prefix}skip`)) {
+        this.musicResponder.skip(message, serverQueue);
+      } else if (message.content.startsWith(`${prefix}stop`)) {
+        //this.musicResponder.stop(message, serverQueue);
+      } else {
+        message.channel.send("You need to enter a valid command!");
+      }
     });
-      return this.client.login(this.token);
+    return this.client.login(this.token);
   }
 }
