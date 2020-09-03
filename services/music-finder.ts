@@ -4,8 +4,8 @@ import * as ytdl from "ytdl-core";
 
 @injectable()
 export class MusicPlayFinder {
+  private HOUR = 1000 * 60 * 60;
   private regexp = '!play';
-
   public isPlayMusic(strToSearch: string,
      message: Message,
      voiceChannel: VoiceChannel) {
@@ -30,8 +30,8 @@ export class MusicPlayFinder {
   }
   public async execute(message: Message, serverQueue: any, queue: Map<any, any>) {
     const args = message.content.split(" ");
-  
     const voiceChannel = message.member.voice.channel;
+
     if (!voiceChannel)
       return message.channel.send(
         "You need to be in a voice channel to play music!"
@@ -60,7 +60,6 @@ export class MusicPlayFinder {
       };
   
       queue.set(message.guild.id, queueContruct);
-  
       queueContruct.songs.push(song);
   
       try {
@@ -94,22 +93,36 @@ export class MusicPlayFinder {
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
     serverQueue.textChannel.send(`Start playing: **${song.title}**`);
   }
+
   public skip(message: Message, serverQueue: any) {
     if (!message.member.voice.channel)
       return message.channel.send(
-        "You have to be in a voice channel to stop the music!"
+        "You have to be in a voice channel to skip the music!"
       );
     if (!serverQueue)
       return message.channel.send("There is no song that I could skip!");
     serverQueue.connection.dispatcher.end();
   }
   
-  public stop(message: Message, serverQueue: any) {
+  public async stop(message: Message, serverQueue: any) {
     if (!message.member.voice.channel)
       return message.channel.send(
         "You have to be in a voice channel to stop the music!"
       );
-    serverQueue.songs = [];
-    serverQueue.connection.dispatcher.end();
+      if (serverQueue.connection.dispatcher.pausedTime() == this.HOUR){
+        serverQueue.connection.dispatcher.end();    
+        return message.channel.send(
+          "You have been disconnect 'cause you are away for too long!"
+        );
+      }
+    serverQueue.connection.dispatcher.pause();
+  }
+
+  public async continue(message: Message, serverQueue: any) {
+    if (!message.member.voice.channel)
+      return message.channel.send(
+        "You have to be in a voice channel to continue the music!"
+      );
+    serverQueue.connection.dispatcher.resume();
   }
 }
