@@ -48,10 +48,10 @@ export class Bot {
       } else if (message.content.startsWith(`${prefix}skip`)) {
         this.musicResponder.skip(message, serverQueue);
       } else if (message.content.startsWith(`${prefix}stop`)) {
-        //this.musicResponder.stop(message, serverQueue);
-      } else {
-        message.channel.send("You need to enter a valid command!");
-      }
+        this.musicResponder.stop(message, serverQueue);
+      } else if (message.content.startsWith(`${prefix}continue`)) {
+        this.musicResponder.continue(message, serverQueue);
+      }     
     });
     return this.client.login(this.token);
   }
