@@ -1,4 +1,4 @@
-import {Client, Message, VoiceConnection} from 'discord.js';
+import {Client, Message} from 'discord.js';
 import {inject, injectable} from "inversify";
 import {TYPES} from "./types";
 import {MessageResponder} from "./services/message-responder"; 
@@ -38,12 +38,11 @@ export class Bot {
       })
 
       const serverQueue = queue.get(message.guild.id);
-
+      const titles: String[] = [];
       if (message.content.startsWith(`${prefix}play`)) {
-        this.musicResponder.play(message, serverQueue, queue).then(() => {
-          message.reply('playing music requested!');
-        }).catch(err => {
-          err.then(_err => console.log(_err.content));
+        this.musicResponder.play(message, serverQueue, queue, titles).then(() => {})
+        .catch(err => {
+          err.then((_err: any) => console.log(_err.content));
         })
       } else if (message.content.startsWith(`${prefix}skip`)) {
         this.musicResponder.skip(message, serverQueue);
