@@ -14,7 +14,7 @@ export class MusicResponder {
     }
     async play(message: Message, 
       serverQueue: any,
-      queue: Map<any, any>) {
+      queue: Map<any, any>, titles: String[]) {
       const voiceChannel = message.member.voice.channel;
 
       const {isPlayable, error} = this.musicFinder.
@@ -23,7 +23,7 @@ export class MusicResponder {
         console.log(`rejecting the promise: ${isPlayable}`)
         return Promise.reject(error);
       }
-      this.musicFinder.execute(message, serverQueue, queue).then(() => {
+      this.musicFinder.execute(message, serverQueue, queue, titles).then(() => {
         console.log('playing a song!');
       }).catch(err => {
         console.log(`error: ${err}`);
