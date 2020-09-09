@@ -28,10 +28,12 @@ export class MusicPlayFinder {
       error: null,
     };
   }
-  public async execute(message: Message, serverQueue: any, queue: Map<any, any>) {
+  public async execute(message: Message, 
+    serverQueue: any,
+    queue: Map<any, any>,
+    titles: String[]) {
     const args = message.content.split(" ");
     const voiceChannel = message.member.voice.channel;
-
     if (!voiceChannel)
       return message.channel.send(
         "You need to be in a voice channel to play music!"
@@ -73,7 +75,9 @@ export class MusicPlayFinder {
       }
     } else {
       serverQueue.songs.push(song);
-      return message.channel.send(`${song.title} has been added to the queue!`);
+      message.channel.send(`${song.title} has been added to the queue!`);
+      this.playlist(serverQueue, titles);
+      return;
     }
   }
   private play(guild: Guild, song: any, queue: any) {
@@ -92,6 +96,19 @@ export class MusicPlayFinder {
     .on("error", (error: any) => console.error(error));
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
     serverQueue.textChannel.send(`Start playing: **${song.title}**`);
+  }
+
+  private playlist(serverQueue: any, titles: String[]) {
+    const playlist: Map<number, String> = new Map(); 
+    let msg: String = ``; 
+    for (let i = 0; i < serverQueue.songs.length; i++) {
+      const {title} = serverQueue.songs[i];
+      playlist.set(i, title);
+    }
+    for (let [key, values] of playlist) {
+      msg += `\`${key} - ${values}\`\n`;
+    }
+    serverQueue.textChannel.send(msg);
   }
 
   public skip(message: Message, serverQueue: any) {
