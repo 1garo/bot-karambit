@@ -1,6 +1,4 @@
-*.js
-*.map
-services/*.js*
 .env
 config.json
-inversify.config.js
+dist
+node_modules
