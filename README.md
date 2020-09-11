@@ -4,8 +4,21 @@
 
 ## Usage
 
+* Go to the [discord developer site](https://discord.com/developers/applications)
+  * Select the server that you wanna to include the bot;
+  * Go to the Bot menu on the left;
+  * Under the bot username will be the *TOKEN*, just click copy and that's it;
+
+**Create a file config.json with the following structure:**
+
+```json5
+{
+  TOKEN = "<TOKEN>"
+}
+```
+After it, just have fun:
 ```python
-!play <link-do-youtube> # can be a music or a playlist
+!play <youtube-link> # can be a music or a playlist
 !stop # stop the music
 !continue # release the music
 !skip # skip to the next music
