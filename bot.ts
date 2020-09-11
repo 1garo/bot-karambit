@@ -1,7 +1,7 @@
 import {Client, Message} from 'discord.js';
 import {inject, injectable} from "inversify";
 import {TYPES} from "./types";
-import {MessageResponder} from "./services/message-responder"; 
+import {PingResponder} from "./services/ping-responder"; 
 import {MusicResponder} from './services/music-responder';
 import {PREFIX as prefix} from './config.json';
 
@@ -9,18 +9,19 @@ import {PREFIX as prefix} from './config.json';
 export class Bot {
   private client: Client;
   private readonly token: string;
-  private messageResponder: MessageResponder;
+  private pingResponder: PingResponder;
   private musicResponder: MusicResponder;
+  private HOUR = 1000 * 60 * 60;
 
   constructor (
     @inject(TYPES.Client) client: Client,
     @inject(TYPES.Token) token: string,
-    @inject(TYPES.MessageResponder) messageResponder: MessageResponder,
+    @inject(TYPES.PingResponder) pingResponder: PingResponder,
     @inject(TYPES.MusicResponder) musicResponder: MusicResponder, 
   ) {
     this.client = client;
     this.token = token;
-    this.messageResponder = messageResponder;
+    this.pingResponder = pingResponder;
     this.musicResponder = musicResponder;
   }
 
@@ -30,17 +31,23 @@ export class Bot {
         console.log('Ignoring bot message!')
         return;
       }
-      console.log("Message received! Contents: ", message.content);
-      this.messageResponder.handle(message).then(() => {
-        console.log('Ping test message sent!')
+
+      this.pingResponder.handle(message).then(() => {
+        console.log('ping sent!')
       }).catch(() => {
-        console.log('Ping teste response not sent.')
+        console.log('ignoring ping!')
       })
 
       const serverQueue = queue.get(message.guild.id);
-      const titles: String[] = [];
+      // TODO: implement a timeout to the bot
+      // if (serverQueue.connection.dispatcher.pausedTime() == this.HOUR){
+      //   serverQueue.connection.dispatcher.end();    
+      //   return message.channel.send(
+      //     "You have been disconnect 'cause you are away for too long!"
+      //   );
+      // }
       if (message.content.startsWith(`${prefix}play`)) {
-        this.musicResponder.play(message, serverQueue, queue, titles).then(() => {})
+        this.musicResponder.play(message, serverQueue, queue).then(() => {})
         .catch(err => {
           err.then((_err: any) => console.log(_err.content));
         })
@@ -50,7 +57,9 @@ export class Bot {
         this.musicResponder.stop(message, serverQueue);
       } else if (message.content.startsWith(`${prefix}continue`)) {
         this.musicResponder.continue(message, serverQueue);
-      }     
+      } else if (message.content.startsWith(`${prefix}exit`)){
+        this.musicResponder.exit(message, serverQueue);
+      }
     });
     return this.client.login(this.token);
   }
