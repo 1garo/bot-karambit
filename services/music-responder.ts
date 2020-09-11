@@ -14,16 +14,16 @@ export class MusicResponder {
     }
     async play(message: Message, 
       serverQueue: any,
-      queue: Map<any, any>, titles: String[]) {
-      const voiceChannel = message.member.voice.channel;
+      queue: Map<any, any>) {
+        const voiceChannel = message.member.voice.channel;
 
-      const {isPlayable, error} = this.musicFinder.
-      isPlayMusic(message.content, message, voiceChannel);
+        const {isPlayable, error} = this.musicFinder.
+        isPlayMusic(message.content, message, voiceChannel);
       if (!isPlayable){
-        console.log(`rejecting the promise: ${isPlayable}`)
+        console.log(`(rejecting the promise): isPlayable: ${isPlayable}`)
         return Promise.reject(error);
       }
-      this.musicFinder.execute(message, serverQueue, queue, titles).then(() => {
+      this.musicFinder.execute(message, serverQueue, queue).then(() => {
         console.log('playing a song!');
       }).catch(err => {
         console.log(`error: ${err}`);
@@ -31,17 +31,18 @@ export class MusicResponder {
       return Promise.resolve(); 
     }
     skip(message: Message, queue: any){
-      console.log(`queue: ${queue}`);
       this.musicFinder.skip(message, queue)
     }
-
+    
     stop(message: Message, queue: any){
-      console.log(`queue: ${queue}`);
       this.musicFinder.stop(message, queue);
     }
-
+    
     continue(message: Message, queue: any) {
-      console.log(`queue: ${queue}`);
       this.musicFinder.continue(message, queue);
     }
-}
+
+    exit(message: Message, queue: any) {
+      this.musicFinder.exit(message, queue);
+    }
+  }

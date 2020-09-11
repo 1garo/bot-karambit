@@ -25,7 +25,7 @@
     "@discordjs/opus": "^0.3.2"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node dist/index.js",
     "watch": "tsc -p tsconfig.json -w",
     "test": "mocha -r ts-node/register \"tests/**/*.spec.ts\""
   }

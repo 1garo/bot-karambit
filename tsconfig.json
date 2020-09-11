@@ -9,7 +9,10 @@
     "typeRoots": ["node_modules/@types"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "resolveJsonModule": true
+    "outDir": "dist",
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "paths": {"*": ["node_modules/*"]}
   },
-  "exclude": ["node_modules"]
+  "include": ["/**/*"]
 }
