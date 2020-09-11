@@ -13,7 +13,7 @@
 
 ```json5
 {
-  TOKEN = "<TOKEN>"
+  "TOKEN": "<TOKEN>"
 }
 ```
 After it, just have fun:
