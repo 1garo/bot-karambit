@@ -1,4 +1,4 @@
-# Bot KARAMBIT
+# Bot Karambit
 
 ### A bot that can play your music's and playlists in your discord channel
 
@@ -19,11 +19,11 @@
 ```
 After it, just have fun:
 ```python
-!play <youtube-link> # can be a music or a playlist
-!stop # stop the music
-!continue # release the music
-!skip # skip to the next music
-!exit # kick the bot from the channel
+!play <youtube-link>
+!stop 
+!continue 
+!skip 
+!exit 
 ```
 
 ## Contributing
