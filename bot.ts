@@ -53,8 +53,8 @@ export class Bot {
         })
       } else if (message.content.startsWith(`${prefix}skip`)) {
         this.musicResponder.skip(message, serverQueue);
-      } else if (message.content.startsWith(`${prefix}stop`)) {
-        this.musicResponder.stop(message, serverQueue);
+      } else if (message.content.startsWith(`${prefix}pause`)) {
+        this.musicResponder.pause(message, serverQueue);
       } else if (message.content.startsWith(`${prefix}continue`)) {
         this.musicResponder.continue(message, serverQueue);
       } else if (message.content.startsWith(`${prefix}exit`)){
