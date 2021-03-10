@@ -63,8 +63,8 @@ export class MusicPlayFinder {
       queue.set(message.guild.id, queueContruct);
       queueContruct.songs.push(song);
       
-      try {
-        var connection = await voiceChannel.join();
+			try {
+        const connection = await voiceChannel.join();
         queueContruct.connection = connection;
         this.play(message.guild, queueContruct.songs[0], queue);
       } catch (err) {
@@ -72,6 +72,7 @@ export class MusicPlayFinder {
         queue.delete(message.guild.id);
         return message.channel.send(err);
       }
+
     } else {
       serverQueue.songs.push(song);
       message.channel.send(`${song.title} has been added to the queue!`);
@@ -85,13 +86,23 @@ export class MusicPlayFinder {
       queue.delete(guild.id);
       return;
     }
+
     const dispatcher = serverQueue.connection
     .play(ytdl(song.url))
     .on("finish", () => {
+			/**
+			 * TODO: make it able to play yt playlists
+			 * serverQueue.songs = [{"title":"Gusttavo Lima - Duas da Manhã (O Embaixador The Legacy)","url":"https://www.youtube.com/watch?v=gK5fnHpU6qg"},
+			 * 										{"title":"Gusttavo Lima - Duas da Manhã (O Embaixador The Legacy)","url":"https://www.youtube.com/watch?v=gK5fnHpU6qg"}]
+			 * 
+			 */
+			console.log(`dispatcher before: ${JSON.stringify(serverQueue.songs)}\n`);
       serverQueue.songs.shift();
+			console.log(`dispatcher after shift: ${JSON.stringify(serverQueue.songs)}\n`);
       this.play(guild, serverQueue.songs[0], queue);
     })
     .on("error", (error: any) => console.error(error));
+
     dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
     serverQueue.textChannel.send(`Start playing: **${song.title}**`);
   }
@@ -119,13 +130,13 @@ export class MusicPlayFinder {
       serverQueue.connection.dispatcher.end();
     }
   
-    public async stop(message: Message, serverQueue: any) {
-      if (!message.member.voice.channel)
-      return message.channel.send(
-        "You have to be in a voice channel to stop the music!"
-        );
-      serverQueue.connection.dispatcher.pause();
-    }
+	public async pause(message: Message, serverQueue: any) {
+		if (!message.member.voice.channel)
+		return message.channel.send(
+			"You have to be in a voice channel to pause the music!"
+			);
+		serverQueue.connection.dispatcher.pause();
+	}
     
   public async continue(message: Message, serverQueue: any) {
     if (!message.member.voice.channel)
