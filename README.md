@@ -20,7 +20,7 @@
 After it, just have fun:
 ```python
 !play <youtube-link>
-!stop 
+!pause 
 !continue 
 !skip 
 !exit 
