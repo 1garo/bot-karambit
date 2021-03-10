@@ -23,19 +23,20 @@ export class MusicResponder {
         console.log(`(rejecting the promise): isPlayable: ${isPlayable}`)
         return Promise.reject(error);
       }
-      this.musicFinder.execute(message, serverQueue, queue).then(() => {
+      try {
+        await this.musicFinder.execute(message, serverQueue, queue)
         console.log('playing a song!');
-      }).catch(err => {
-        console.log(`error: ${err}`);
-      })
+      } catch (err) {
+        console.log(`error: cannot play the song required\n ${err}`);
+      }
       return Promise.resolve(); 
     }
     skip(message: Message, queue: any){
       this.musicFinder.skip(message, queue)
     }
     
-    stop(message: Message, queue: any){
-      this.musicFinder.stop(message, queue);
+    pause(message: Message, queue: any){
+      this.musicFinder.pause(message, queue);
     }
     
     continue(message: Message, queue: any) {
