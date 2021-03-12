@@ -139,6 +139,8 @@ export class MusicPlayFinder {
 		serverQueue.connection.dispatcher.pause();
 	}
     
+  // TODO: when using pause->continue it doesnt work, if skips the music, it works
+  // maybe could be something related to reference
   public async continue(message: Message, serverQueue: any) {
     if (!message.member.voice.channel)
       return message.channel.send(
