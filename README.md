@@ -9,7 +9,7 @@
   * Go to the Bot menu on the left;
   * Under the bot username will be the *TOKEN*, just click copy and that's it;
 
-**Create a file config.json with the following structure:**
+**Create a file config.json on root with the following structure:**
 
 ```json5
 {
