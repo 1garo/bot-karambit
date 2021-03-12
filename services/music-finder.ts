@@ -135,6 +135,7 @@ export class MusicPlayFinder {
 		return message.channel.send(
 			"You have to be in a voice channel to pause the music!"
 			);
+      console.log('aaa ' + serverQueue.connection.dispatcher.playing);
 		serverQueue.connection.dispatcher.pause();
 	}
     
@@ -143,7 +144,12 @@ export class MusicPlayFinder {
       return message.channel.send(
         "You have to be in a voice channel to continue the music!"
         );
-    serverQueue.connection.dispatcher.resume();
+        console.log('entrou')
+      console.log(serverQueue.connection.dispatcher);
+      if (serverQueue.connection.dispatcher.paused) {
+        console.log('aquiiiiiiii');
+        serverQueue.connection.dispatcher.resume();
+      }
   }
 
   public exit(message: Message, serverQueue: any) {
