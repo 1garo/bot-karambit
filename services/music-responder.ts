@@ -17,8 +17,8 @@ export class MusicResponder {
       queue: Map<any, any>) {
         const voiceChannel = message.member.voice.channel;
 
-        const {isPlayable, error} = this.musicFinder.
-        isPlayMusic(message.content, message, voiceChannel);
+        console.log(`loggin: ${this.musicFinder}`);
+        const {isPlayable, error} = this.musicFinder.isPlayMusic(message.content, message, voiceChannel);
       if (!isPlayable){
         console.log(`(rejecting the promise): isPlayable: ${isPlayable}`)
         return Promise.reject(error);
@@ -31,19 +31,20 @@ export class MusicResponder {
       }
       return Promise.resolve(); 
     }
-    skip(message: Message, queue: any){
+
+    async skip(message: Message, queue: any){
       this.musicFinder.skip(message, queue)
     }
     
-    pause(message: Message, queue: any){
+    async pause(message: Message, queue: any){
       this.musicFinder.pause(message, queue);
     }
     
-    continue(message: Message, queue: any) {
+    async continue(message: Message, queue: any) {
       this.musicFinder.continue(message, queue);
     }
 
-    exit(message: Message, queue: any) {
+    async exit(message: Message, queue: any) {
       this.musicFinder.exit(message, queue);
     }
   }
