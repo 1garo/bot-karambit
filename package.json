@@ -11,18 +11,19 @@
     "inversify": "^5.0.1",
     "reflect-metadata": "^0.1.13",
     "typescript": "^4.0.2",
-    "ytdl": "^1.3.5"
+    "ytdl": "^1.3.5",
+    "ytdl-core": "^4.5.0"
   },
   "devDependencies": {
+    "@discordjs/node-pre-gyp": "^0.1.0",
+    "@discordjs/opus": "^0.3.2",
     "@types/chai": "^4.2.12",
     "@types/mocha": "^8.0.3",
     "chai": "^4.2.0",
     "mocha": "^8.1.2",
-    "ts-mockito": "^2.6.1",
-    "ts-node": "^9.0.0",
-    "@discordjs/node-pre-gyp": "^0.1.0",
     "node-addon-api": "^2.0.0",
-    "@discordjs/opus": "^0.3.2"
+    "ts-mockito": "^2.6.1",
+    "ts-node": "^9.0.0"
   },
   "scripts": {
     "start": "node dist/index.js",
