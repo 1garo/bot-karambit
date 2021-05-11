@@ -1,9 +1,9 @@
-import {Client, Message} from 'discord.js';
-import {inject, injectable} from "inversify";
-import {TYPES} from "./types";
-import {PingResponder} from "./services/ping-responder"; 
-import {MusicResponder} from './services/music-responder';
-import {PREFIX as prefix} from './config.json';
+import { Client, Message} from 'discord.js';
+import { inject, injectable} from "inversify";
+import { TYPES} from "./types";
+import { PingResponder} from "./services/ping-responder"; 
+import { MusicResponder} from './services/music-responder';
+//import { PREFIX as prefix} from './config.json';
 
 @injectable()
 export class Bot {
@@ -56,7 +56,7 @@ export class Bot {
       // }
 
       const PLAY = `${message.content.split(' ')[0].slice(1)}`;
-      console.log(`here : ${PLAY}`)
+      console.log(`here: ${PLAY}\n id: ${message.id}`)
       PLAY === "play" ? await this.musicResponder[`${message.content.split(' ')[0].slice(1)}`](message, serverQueue, queue) : 
       await this.musicResponder[`${message.content.split(' ')[0].slice(1)}`](message, serverQueue);
 
