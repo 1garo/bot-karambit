@@ -146,10 +146,12 @@ export class MusicPlayFinder {
       return message.channel.send(
         "You have to be in a voice channel to continue the music!"
         );
-        console.log('entrou')
-      console.log(serverQueue.connection.dispatcher);
+      console.log(message.id);
+      //console.log(serverQueue.connection.dispatcher);
       if (serverQueue.connection.dispatcher.paused) {
-        console.log('aquiiiiiiii');
+        console.log('aquiiiiiiii\n');
+        console.log(serverQueue.connection.dispatcher);
+        
         serverQueue.connection.dispatcher.resume();
       }
   }
